@@ -1,11 +1,18 @@
 import puppeteer from "puppeteer";
 import fs from "fs";
+import crypto from "crypto";
 
 class Parser {
-  constructor(page) {
+  constructor(page, json) {
     this.page = page;
-  }
+    this.json = json;
 
+    this.promptCount = 0;
+    this.page.on("dialog", async (dialog) => {
+      const promptValue = this.json.prompts[this.promptCount++];
+      await dialog.accept(promptValue);
+    });
+  }
   async getElements(css) {
     // wait for the element to be visible
     await this.page.waitForSelector(css);
@@ -29,7 +36,7 @@ class Parser {
     await this.page.evaluate((element) => element.click(), element);
   }
 
-  async parse(objects, path = []) {
+  async parse(objects = this.json.elements, path = []) {
     for (const obj of objects) {
       // wait for a while for debugging
       await this.page.waitForTimeout(500);
@@ -54,6 +61,16 @@ class Parser {
           } else {
             console.log("FAIL", css, `: ${key} == ${attr} instead of ${value}`);
           }
+        }
+      }
+
+      if (obj.innerHTML) {
+        const innerHTML = (await this.getElementText(elements[0])).toString();
+
+        if (innerHTML.includes(obj.innerHTML)) {
+          console.log("PASS", css, innerHTML);
+        } else {
+          console.log("FAIL", css, `${obj.innerHTML} not found in element`);
         }
       }
 
@@ -83,6 +100,9 @@ const keypress = async () => {
 };
 
 const test = async (url, jsonFilepath) => {
+  const data = fs.readFileSync(jsonFilepath, "utf-8");
+  const json = await JSON.parse(data);
+
   const browser = await puppeteer.launch({
     headless: false,
   });
@@ -92,19 +112,15 @@ const test = async (url, jsonFilepath) => {
     waitUntil: "domcontentloaded",
   });
 
-  const parser = new Parser(page);
-
-  const data = fs.readFileSync(jsonFilepath, "utf-8");
-  const objects = await JSON.parse(data);
-
-  await parser.parse(objects);
+  const parser = new Parser(page, json);
+  await parser.parse();
 
   await keypress();
   await browser.close();
 };
 
 const url =
-  "http://users.metropolia.fi/~teemueer/assignments/module3/t11/11.html";
-const jsonFilepath = "./json/module3/11.json";
+  "http://users.metropolia.fi/~teemueer/assignments/module1/03/03.html";
+const jsonFilepath = "./json/module1/03.json";
 
 test(url, jsonFilepath).then(process.exit);

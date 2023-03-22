@@ -1,0 +1,11 @@
+{
+  "prompts": [
+    "teemu"
+  ],
+  "elements": [
+    {
+      "name": "p#target",
+      "innerHTML": "teemu"
+    }
+  ]
+}

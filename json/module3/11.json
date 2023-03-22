@@ -1,62 +1,64 @@
-[
-  {
-    "name": "article",
-    "children": [
-      {
-        "name": "h2"
-      },
-      {
-        "name": "figure",
-        "children": [
-          {
-            "name": "img",
-            "attrs": {
-              "src": true,
-              "alt": true
+{
+  "elements": [
+    {
+      "name": "article",
+      "children": [
+        {
+          "name": "h2"
+        },
+        {
+          "name": "figure",
+          "children": [
+            {
+              "name": "img",
+              "attrs": {
+                "src": true,
+                "alt": true
+              }
+            },
+            {
+              "name": "figcaption"
             }
-          },
-          {
-            "name": "figcaption"
-          }
-        ]
-      },
-      {
-        "name": "p"
-      }
-    ]
-  },
-  {
-    "name": "dialog",
-    "attrs": {
-      "open": null
-    }
-  },
-  {
-    "name": "article",
-    "action": "click"
-  },
-  {
-    "name": "dialog",
-    "attrs": {
-      "open": ""
-    },
-    "children": [
-      {
-        "name": "img",
-        "attrs": {
-          "src": true
+          ]
+        },
+        {
+          "name": "p"
         }
+      ]
+    },
+    {
+      "name": "dialog",
+      "attrs": {
+        "open": null
       }
-    ]
-  },
-  {
-    "name": "dialog span",
-    "action": "click"
-  },
-  {
-    "name": "dialog",
-    "attrs": {
-      "open": null
+    },
+    {
+      "name": "article",
+      "action": "click"
+    },
+    {
+      "name": "dialog",
+      "attrs": {
+        "open": ""
+      },
+      "children": [
+        {
+          "name": "img",
+          "attrs": {
+            "src": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "dialog span",
+      "action": "click"
+    },
+    {
+      "name": "dialog",
+      "attrs": {
+        "open": null
+      }
     }
-  }
-]
+  ]
+}
