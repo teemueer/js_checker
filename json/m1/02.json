@@ -4,7 +4,7 @@
   ],
   "elements": [
     {
-      "name": "p#target",
+      "name": "body",
       "innerHTML": "teemu"
     }
   ]
