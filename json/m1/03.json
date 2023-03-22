@@ -6,7 +6,7 @@
   ],
   "elements": [
     {
-      "name": "p#target",
+      "name": "body",
       "innerHTML": "1378"
     }
   ]
