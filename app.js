@@ -20,10 +20,7 @@ app.post("/test", async (req, res) => {
   const data = fs.readFileSync(jsonFilepath, "utf-8");
   const json = await JSON.parse(data);
 
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--disable-features=site-per-process"],
-  });
+  const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
 
   const [page] = await browser.pages();
 
