@@ -23,7 +23,6 @@
 !.mailmap
 !.nycrc
 !.yamllint.yaml
-!.puppeteerrc.cjs
 
 # === Rules for root dir ===
 /core
