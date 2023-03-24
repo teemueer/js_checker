@@ -41,7 +41,7 @@ class Parser {
   async parse(objects = this.json.elements, path = []) {
     for (const obj of objects) {
       // wait for a while for debugging
-      //await this.page.waitForTimeout(500);
+      //await this.page.waitForTimeout(200);
       // keep track of nested elements
       const currentPath = [...path, obj];
       // css selector path

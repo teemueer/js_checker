@@ -22,7 +22,7 @@ app.post("/test", async (req, res) => {
 
   const browser = await puppeteer.launch({
     headless: true,
-    args: ["--disable-features=site-per-process"],
+    args: ["--disable-features=site-per-process", "--window-position=1920,0"],
   });
 
   const [page] = await browser.pages();
