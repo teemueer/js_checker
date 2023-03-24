@@ -36,4 +36,5 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: html-js-checker
           heroku_email: ${{secrets.HEROKU_EMAIL}}
+          buildpack: "https://github.com/heroku/heroku-buildpack-apt"
           buildpack: "https://github.com/jontewks/puppeteer-heroku-buildpack.git"
