@@ -1,81 +1,29 @@
-const {MongoClient} = require('mongodb');
-require('dotenv').config({path:'../.env'});
+const mongoose = require("mongoose");
+const Test = require("./models/Test");
+require("dotenv").config({ path: "../.env" });
 const uri = process.env.MONGODB;
-const client = new MongoClient(uri);
-
-//Database and collection constants
-const database = "JSHTML"
-const collection = "tests"
+const Tests = require("./models/Test");
 
 /*
-    IMPROVEMENT SUGGESTIONS:
-
-    -Perhaps create a metropolia account ? 
-
     TODO:
-    
-
 */
 
-// Lists all databases and console.logs them
-async function listDatabases(client){
-    databasesList = await client.db().admin().listDatabases();
-    console.log("Databases:");
-    databasesList.databases.forEach(db => console.log(` - ${db.name}`));
+//Connect to the database
+const mongoConnect = async () => {
+  console.log(uri);
+  const connection = await mongoose.connect(uri);
+  return connection;
 };
 
-// main simply attempts to connect to database and list databases (try)
-async function main(){
-    try {
-        await client.connect();
-    
-        await listDatabases(client);
-     
-    } catch (e) {
-        console.error(e);
-    }
-    
-    finally{
-        await client.close();
-    }
+//Function to create a new test.
+async function createTest() {
+  const test = await Tests.create({
+    name: "m1-t2",
+    prompts: ["Teemu"],
+    elements: [{ name: "body", innerHTML: "Teemu" }],
+  });
+  await test.save();
 }
 
-//CRUD FUNCTIONS
-
-
-//Create functions
-
-
-//Read functions
-async function getTestyByName(nameOfTest){
-    
-    const result = await client.db(database)
-    .collection(collection).findOne({name: nameOfTest})
-
-    if(result){
-        console.log(`Found a test with thte name: ${nameOfTest}`)
-        console.log(result)
-    } else {
-        console.log(`No listings found with the name ${nameOfTest}`)
-        
-    }
-
-
-}
-
-
-//Update functions
-
-
-
-
-//Delete functions
-
-
-
-
-
-getTestyByName("m1-t2")
-main().catch(console.error);
-
-module.exports =  {getTestyByName}
+mongoConnect();
+createTest();
