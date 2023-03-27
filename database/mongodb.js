@@ -11,7 +11,6 @@ const Tests = require("./models/Test");
 //Connect to the database
 const mongoConnect = async () => {
   try {
-    console.log(uri);
     const connection = await mongoose.connect(uri);
     return connection;
   } catch (error) {
@@ -33,5 +32,20 @@ async function createTest() {
   }
 }
 
+async function getTest(name) {
+  try {
+    const test = await Test.find({ name: name }, { _id: 0, __v: 0, name: 0 });
+    return test;
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+async function closeConnection() {
+  await mongoose.connection.close();
+}
+
 mongoConnect();
-createTest();
+getTest("m1-t2");
+
+module.exports = { mongoConnect, getTest, createTest, closeConnection };
