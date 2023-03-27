@@ -10,19 +10,27 @@ const Tests = require("./models/Test");
 
 //Connect to the database
 const mongoConnect = async () => {
-  console.log(uri);
-  const connection = await mongoose.connect(uri);
-  return connection;
+  try {
+    console.log(uri);
+    const connection = await mongoose.connect(uri);
+    return connection;
+  } catch (error) {
+    console.log("DB:" + error.message);
+  }
 };
 
 //Function to create a new test.
 async function createTest() {
-  const test = await Tests.create({
-    name: "m1-t2",
-    prompts: ["Teemu"],
-    elements: [{ name: "body", innerHTML: "Teemu" }],
-  });
-  await test.save();
+  try {
+    const test = await Tests.create({
+      name: "m1-t2",
+      prompts: ["Teemu"],
+      elements: [{ name: "body", innerHTML: "Teemu" }],
+    });
+    await test.save();
+  } catch (error) {
+    console.log("Error while creating test!:" + error.message);
+  }
 }
 
 mongoConnect();
