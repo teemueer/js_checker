@@ -9,7 +9,6 @@ describe("test with working solution", () => {
       url: "http://users.metropolia.fi/~teemueer/assignments/module1/02/02.html",
       exercise: "m1-02",
     };
-
     const res = await api.post("/test").send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });

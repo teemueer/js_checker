@@ -2,7 +2,8 @@ const puppeteer = require("puppeteer");
 const fs = require("fs");
 const Parser = require("./parser");
 const keypress = require("./utils/keypress");
-
+const dotenv = require('dotenv');
+dotenv.config();
 const express = require("express");
 const app = express();
 app.use(express.json());
