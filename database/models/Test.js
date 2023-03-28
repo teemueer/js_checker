@@ -11,6 +11,7 @@ const testSchema = new mongoose.Schema({
   },
   prompts: Array,
   elements: Array,
+  answers: Array,
 });
 
 module.exports = mongoose.model("Test", testSchema);

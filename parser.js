@@ -5,9 +5,15 @@ class Parser {
     this.results = [];
 
     this.promptCount = 0;
+
     this.page.on("dialog", async (dialog) => {
-      const promptValue = this.json.prompts[this.promptCount++];
-      await dialog.accept(promptValue);
+      let type = dialog.type();
+      if (type == "confirm") {
+        await dialog.accept();
+      } else {
+        const promptValue = this.json.prompts[this.promptCount++];
+        await dialog.accept(promptValue);
+      }
     });
   }
 
