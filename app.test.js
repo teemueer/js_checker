@@ -41,4 +41,40 @@ describe("test with working solution", () => {
     const res = await api.post("/test").send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
+
+  it("m1-04", async () => {
+    database.mongoConnect();
+    const a = await database.getTest("m1-04");
+    const data = {
+      url: "https://users.metropolia.fi/~juhojj/JS-HTML-CHECKER/Modules/Module%201/Assignment%204/assignment4.html",
+      exercise: "m1-04",
+      test: a,
+    };
+    const res = await api.post("/test").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  it("m1-05", async () => {
+    database.mongoConnect();
+    const a = await database.getTest("m1-05");
+    const data = {
+      url: "https://users.metropolia.fi/~juhojj/JS-HTML-CHECKER/Modules/Module%201/Assignment%205/assignment5.html",
+      exercise: "m1-05",
+      test: a,
+    };
+    const res = await api.post("/test").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  it("m1-06", async () => {
+    database.mongoConnect();
+    const a = await database.getTest("m1-06");
+    const data = {
+      url: "https://users.metropolia.fi/~juhojj/JS-HTML-CHECKER/Modules/Module%201/Assignment%206/assignment6.html",
+      exercise: "m1-06",
+      test: a,
+    };
+    const res = await api.post("/test").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
 });

@@ -25,6 +25,7 @@ async function createTest() {
       name: "m1-t2",
       prompts: ["Teemu"],
       elements: [{ name: "body", innerHTML: "Teemu" }],
+      atest: "Does this work?",
     });
     await test.save();
   } catch (error) {
@@ -34,10 +35,20 @@ async function createTest() {
 
 async function getTest(name) {
   try {
-    const test = await Test.find({ name: name }, { _id: 0, __v: 0, name: 0 });
-    return test;
+    const result = await Test.find({ name: name }, { _id: 0, __v: 0, name: 0 });
+    return result;
   } catch (error) {
     console.log(error.message);
+  }
+}
+
+async function getAllTests() {
+  try {
+    const result = await Test.find();
+    console.log(result);
+    return result;
+  } catch (error) {
+    console.log("ERROR: " + error.message);
   }
 }
 
@@ -45,7 +56,10 @@ async function closeConnection() {
   await mongoose.connection.close();
 }
 
-mongoConnect();
-getTest("m1-t2");
-
-module.exports = { mongoConnect, getTest, createTest, closeConnection };
+module.exports = {
+  mongoConnect,
+  getTest,
+  createTest,
+  closeConnection,
+  getAllTests,
+};
