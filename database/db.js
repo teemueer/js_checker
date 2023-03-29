@@ -1,20 +1,29 @@
+const config = require("../utils/config");
 const mongoose = require("mongoose");
-const Test = require("./models/Test");
-require("dotenv").config({ path: "../.env" });
-const uri = process.env.MONGODB;
-const Tests = require("./models/Test");
+const Test = require("./models/test");
 
 /*
     TODO:
 */
 
-//Connect to the database
-const mongoConnect = async () => {
+// Connect to the database
+const connect = async () => {
   try {
-    const connection = await mongoose.connect(uri);
+    const connection = await mongoose.connect(config.MONGODB_URI);
+    console.log("Connected to MongoDB");
     return connection;
   } catch (error) {
-    console.log("DB:" + error.message);
+    console.error("MongoDB:" + error.message);
+  }
+};
+
+// Disconnect from the database
+const disconnect = async () => {
+  try {
+    await mongoose.connection.close();
+    console.log("Disconnected from MongoDB");
+  } catch (error) {
+    console.error("MongoDB:", error.message);
   }
 };
 
@@ -57,7 +66,8 @@ async function closeConnection() {
 }
 
 module.exports = {
-  mongoConnect,
+  connect,
+  disconnect,
   getTest,
   createTest,
   closeConnection,

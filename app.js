@@ -1,43 +1,15 @@
-const puppeteer = require("puppeteer");
-const fs = require("fs");
-const Parser = require("./parser");
-const keypress = require("./utils/keypress");
-const dotenv = require("dotenv");
-dotenv.config();
 const express = require("express");
+require("express-async-errors");
+const database = require("./database/db");
+const testRouter = require("./controllers/test");
+const checkRouter = require("./controllers/check");
+
+database.connect();
+
 const app = express();
 app.use(express.json());
 
-app.post("/test", async (req, res) => {
-  const { url, exercise, test } = req.body;
-  /*
-  const [module, task] = exercise.split("-");
-  const jsonFilepath = `./json/${module}/${task}.json`;
-  if (!fs.existsSync(jsonFilepath)) {
-    res.status(404).json({ message: "Exercise not found" });
-    return;
-  }
-  const data = fs.readFileSync(jsonFilepath, "utf-8");
-  const json = await JSON.parse(data);
-  */
-
-  const json = test;
-
-  const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
-
-  const [page] = await browser.pages();
-
-  const parser = new Parser(page, json);
-
-  await page.goto(url, {
-    waitUntil: "domcontentloaded",
-  });
-
-  const results = await parser.parse();
-
-  await browser.close();
-
-  res.json(results || []);
-});
+app.use("/api/test", testRouter);
+app.use("/api/check", checkRouter);
 
 module.exports = app;

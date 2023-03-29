@@ -1,7 +1,7 @@
 class Parser {
   constructor(page, json) {
     this.page = page;
-    this.json = json[0];
+    this.json = json;
     this.results = [];
 
     this.promptCount = 0;

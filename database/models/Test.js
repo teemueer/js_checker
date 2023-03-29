@@ -1,17 +1,18 @@
 const mongoose = require("mongoose");
 
-//Name is required, but everything else can be left as blank! (for now)
-/*
- If schema becomes too complex. Create extra schemas for arrays.
-*/
-const testSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    require: true,
+const testSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    prompts: [String],
+    elements: [{}],
   },
-  prompts: Array,
-  elements: Array,
-  answers: Array,
-});
+  { versionKey: false }
+);
 
-module.exports = mongoose.model("Test", testSchema);
+const Test = mongoose.model("Test", testSchema);
+
+module.exports = Test;
