@@ -20,7 +20,7 @@ describe("test with working solution", () => {
       exercise: "m1-03",
     };
 
-    const res = await api.post("/test").send(data);
+    const res = await api.post("/api/check").send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -39,7 +39,7 @@ describe("test with working solution", () => {
       url: "https://users.metropolia.fi/~juhojj/JS-HTML-CHECKER/Modules/Module%201/Assignment%204/assignment4.html",
       exercise: "m1-04",
     };
-    const res = await api.post("/test").send(data);
+    const res = await api.post("/api/check").send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -48,7 +48,7 @@ describe("test with working solution", () => {
       url: "https://users.metropolia.fi/~juhojj/JS-HTML-CHECKER/Modules/Module%201/Assignment%205/assignment5.html",
       exercise: "m1-05",
     };
-    const res = await api.post("/test").send(data);
+    const res = await api.post("/api/check").send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -57,7 +57,7 @@ describe("test with working solution", () => {
       url: "https://users.metropolia.fi/~juhojj/JS-HTML-CHECKER/Modules/Module%201/Assignment%206/assignment6.html",
       exercise: "m1-06",
     };
-    const res = await api.post("/test").send(data);
+    const res = await api.post("/api/check").send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
