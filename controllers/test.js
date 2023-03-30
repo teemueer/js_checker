@@ -31,6 +31,7 @@ router.post("/:name", async (req, res) => {
   const { url } = req.body;
 
   const test = await Test.findOne({ name });
+  console.log(test);
   if (!test) {
     res.status(404).json({ message: `Exercise '${name} was not found` });
     return;
