@@ -29,6 +29,7 @@ const disconnect = async () => {
   }
 };
 
+/*
 //Function to create a new test.
 async function createTest() {
   try {
@@ -66,12 +67,13 @@ async function getAllTests() {
 async function closeConnection() {
   await mongoose.connection.close();
 }
+*/
 
 module.exports = {
   connect,
   disconnect,
-  getTest,
-  createTest,
-  closeConnection,
-  getAllTests,
+  //getTest,
+  //createTest,
+  //closeConnection,
+  //getAllTests,
 };
