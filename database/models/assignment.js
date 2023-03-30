@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const testSchema = new mongoose.Schema(
+const assignmentSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -13,6 +13,6 @@ const testSchema = new mongoose.Schema(
   { versionKey: false }
 );
 
-const Test = mongoose.model("Test", testSchema);
+const Assignment = mongoose.model("Assignment", assignmentSchema);
 
-module.exports = Test;
+module.exports = Assignment;

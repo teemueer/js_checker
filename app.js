@@ -2,8 +2,7 @@ const express = require("express");
 const cors = require("cors");
 require("express-async-errors");
 const database = require("./database/db");
-const testRouter = require("./controllers/test");
-const checkRouter = require("./controllers/check");
+const assignmentRouter = require("./controllers/assignment");
 
 database.connect();
 
@@ -11,6 +10,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/test", testRouter);
+app.use("/api/assignment", assignmentRouter);
 
 module.exports = app;
