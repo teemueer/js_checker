@@ -9,8 +9,10 @@ const Test = require("./models/test");
 // Connect to the database
 const connect = async () => {
   try {
-    const connection = await mongoose.connect(config.MONGODB_URI);
-    console.log("Connected to MongoDB");
+    const connection = await mongoose.connect(config.MONGODB_URI, {
+      autoIndex: true,
+    });
+    console.log("Connected to MongoDB", config.MONGODB_URI);
     return connection;
   } catch (error) {
     console.error("MongoDB:" + error.message);
