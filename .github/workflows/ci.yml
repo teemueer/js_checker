@@ -23,6 +23,8 @@ jobs:
 
       - name: Run test
         run: npm test
+        env:
+          MONGODB_URI: ${{secrets.MONGODB_URI}}
 
   deploy:
     runs-on: ubuntu-latest
@@ -37,3 +39,5 @@ jobs:
           heroku_app_name: html-js-checker
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           buildpack: "https://github.com/jontewks/puppeteer-heroku-buildpack.git"
+        env:
+          MONGODB_URI: ${{secrets.MONGODB_URI}}

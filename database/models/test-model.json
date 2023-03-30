@@ -1,0 +1,18 @@
+{
+    "name":"Module-testnNum",
+    "prompts":["String ja vaikka Int tyyliset", 123],
+    "answers":{
+       "0":"Vastauksia",
+       "1":"Niin paljon kuin haluaa",
+       "2":["Vaikka array vastaukseksi"]
+    },
+    "elements":[
+        {"name":"body", "innerHTML":["Test","asd"]},
+        {"name":"jokin-ID","innerHTML":["Jotain"]}
+    ],
+    "testParams":[{
+        "prompts": true,
+        "answers": false,
+        "elements": false
+    }]
+}

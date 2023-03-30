@@ -5,9 +5,15 @@ class Parser {
     this.results = [];
 
     this.promptCount = 0;
+
     this.page.on("dialog", async (dialog) => {
-      const promptValue = this.json.prompts[this.promptCount++];
-      await dialog.accept(promptValue);
+      let type = dialog.type();
+      if (type == "confirm") {
+        await dialog.accept();
+      } else {
+        const promptValue = this.json.prompts[this.promptCount++];
+        await dialog.accept(promptValue);
+      }
     });
   }
 
@@ -72,11 +78,23 @@ class Parser {
       }
 
       if (obj.innerHTML) {
+        let checkIfArray = Array.isArray(obj.innerHTML);
         const innerHTML = (await this.getElementText(element)).toString();
-        this.results.push({
-          description: `${css}.innerHTML contains ${obj.innerHTML}`,
-          result: innerHTML.includes(obj.innerHTML) ? "PASS" : "FAIL",
-        });
+        if (!checkIfArray) {
+          this.results.push({
+            description: `${css}.innerHTML contains ${obj.innerHTML}`,
+            result: innerHTML.includes(obj.innerHTML) ? "PASS" : "FAIL",
+          });
+        } else {
+          for (let i = 0; i < obj.innerHTML.length; i++) {
+            if (innerHTML.includes(obj.innerHTML[i])) {
+              this.results.push({
+                description: `${css}.innerHTML contains ${obj.innerHTML}`,
+                result: innerHTML.includes(obj.innerHTML[i]) ? "PASS" : "FAIL",
+              });
+            }
+          }
+        }
       }
 
       if (obj.action) {
