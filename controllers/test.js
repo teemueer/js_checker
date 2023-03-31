@@ -10,6 +10,19 @@ router.get("/", async (req, res) => {
   res.json(tests);
 });
 
+//route for updating current test
+
+router.post("/update", async (req, res) => {
+  const { test } = req.body;
+  //Get test with ID
+  const fetchTest = await Test.findById(test._id);
+  //Replace elements of test. database <- front-end
+  fetchTest.elements = test.elements;
+  //Save changes
+  await fetchTest.save();
+  res.json(fetchTest.toJSON());
+});
+
 // route for posting new tests
 router.post("/", async (req, res) => {
   const { name, json } = req.body;
