@@ -11,6 +11,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/test", testRouter);
+app.use("/api/assignment", testRouter);
 
 module.exports = app;

@@ -11,19 +11,17 @@ router.get("/", async (req, res) => {
 });
 
 //route for updating current test
-router.post("/update", async (req, res) => {
-  const { test, json } = req.body;
-  console.log(json.elements);
-  //Get test with ID
-  const fetchTest = await Test.findById(test._id);
-  //Replace elements of test. database <- front-end¨
-  fetchTest.elements = json.elements.slice(0);
-  //Save changes
-  await fetchTest.save();
-  res.json(fetchTest.toJSON());
-});
+router.patch("/:id", async (req, res) => {
+  const { name, items } = req.body;
+  const id = req.params.id;
+  const fetchAssignment = await Test.findById(id);
 
-router.patch;
+  fetchAssignment.name == name;
+  fetchAssignment.items = items.slice(0);
+
+  await fetchAssignment.save();
+  res.json(fetchAssignment.toJSON());
+});
 
 // route for deleting tests
 router.delete("/:id", async (req, res) => {
@@ -35,17 +33,13 @@ router.delete("/:id", async (req, res) => {
 
 // route for posting new tests
 router.post("/", async (req, res) => {
-  const { name, json } = req.body;
-
-  console.log(json);
-
-  const test = new Test({
+  const { name, items } = req.body;
+  const assignment = new Test({
     name,
-    elements: json.elements,
+    items,
   });
-
-  const savedTest = await test.save();
-  res.json(savedTest.toJSON());
+  const newAssignment = await assignment.save();
+  res.json(newAssignment.toJSON());
 });
 
 // route for posting url and getting results

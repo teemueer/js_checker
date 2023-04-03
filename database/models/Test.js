@@ -7,8 +7,8 @@ const testSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    prompts: [String],
-    elements: [{}],
+    //prompts: [String],
+    items: [],
   },
   { versionKey: false }
 );
