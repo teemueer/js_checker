@@ -26,11 +26,11 @@ router.post("/update", async (req, res) => {
 router.patch;
 
 // route for deleting tests
-router.delete("/", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const id = req.params.id;
-  console.log(req.params);
+  console.log(id);
+  await Test.findOneAndDelete({ _id: id });
   res.send(id);
-  //await Test.findOneAndDelete({_id: id})
 });
 
 // route for posting new tests
