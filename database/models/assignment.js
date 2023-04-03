@@ -7,8 +7,7 @@ const assignmentSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    prompts: [String],
-    elements: [{}],
+    items: [],
   },
   { versionKey: false }
 );

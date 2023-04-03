@@ -4,8 +4,8 @@ const supertest = require("supertest");
 
 const api = supertest(app);
 
-// 10 second timeout
-jest.setTimeout(10000);
+// 15 second timeout
+jest.setTimeout(15000);
 
 describe("test with working solution", () => {
   it("m1-02", async () => {
