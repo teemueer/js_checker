@@ -6,23 +6,40 @@ const Assignment = require("../database/models/assignment");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const exercises = await Assignment.find({});
-  res.json(exercises);
+  const assignments = await Assignment.find().sort({ name: 1 });
+  res.json(assignments);
 });
 
-// route for posting new exercises
+//route for updating current test
+router.patch("/:id", async (req, res) => {
+  const { name, items } = req.body;
+  const id = req.params.id;
+  const fetchAssignment = await Assignment.findById(id);
+
+  fetchAssignment.name == name;
+  fetchAssignment.items = items.slice(0);
+
+  await fetchAssignment.save();
+  res.json(fetchAssignment.toJSON());
+});
+
+// route for deleting tests
+router.delete("/:id", async (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  await Assignment.findOneAndDelete({ _id: id });
+  res.send(id);
+});
+
+// route for posting new tests
 router.post("/", async (req, res) => {
-  const { name, json } = req.body;
-
-  console.log(json);
-
+  const { name, items } = req.body;
   const assignment = new Assignment({
     name,
-    elements: json.elements,
+    items,
   });
-
-  const savedAssignment = await assignment.save();
-  res.json(savedAssignment.toJSON());
+  const newAssignment = await assignment.save();
+  res.json(newAssignment.toJSON());
 });
 
 // route for posting url and getting results
@@ -31,12 +48,15 @@ router.post("/:name", async (req, res) => {
   const { url } = req.body;
 
   const assignment = await Assignment.findOne({ name });
+  console.log(assignment);
   if (!assignment) {
     res.status(404).json({ message: `Assignment '${name} was not found` });
     return;
   }
 
-  const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
+  const browser = await puppeteer.launch({
+    args: ["--no-sandbox"],
+  });
 
   const [page] = await browser.pages();
 

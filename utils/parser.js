@@ -1,20 +1,23 @@
 class Parser {
-  constructor(page, json) {
+  constructor(page, assignment) {
     this.page = page;
-    this.json = json;
-    this.results = [];
 
+    this.elements = assignment.items.filter((assg) => assg.type === "element");
+
+    this.prompts = assignment.items.filter((assg) => assg.type === "prompt");
     this.promptCount = 0;
 
     this.page.on("dialog", async (dialog) => {
-      let type = dialog.type();
+      const type = dialog.type();
       if (type == "confirm") {
         await dialog.accept();
       } else {
-        const promptValue = this.json.prompts[this.promptCount++];
+        const promptValue = this.prompts[this.promptCount++].value;
         await dialog.accept(promptValue);
       }
     });
+
+    this.results = [];
   }
 
   async getElements(css) {
@@ -44,7 +47,7 @@ class Parser {
     await this.page.evaluate((element) => element.click(), element);
   }
 
-  async parse(objects = this.json.elements, path = []) {
+  async parse(objects = this.elements, path = []) {
     for (const obj of objects) {
       // wait for a while for debugging
       //await this.page.waitForTimeout(200);
@@ -65,35 +68,26 @@ class Parser {
       const element = elements[0];
 
       if (obj.attrs) {
-        for (const [key, value] of Object.entries(obj.attrs)) {
-          const attr = await this.getElementAttribute(element, key);
+        for (const attr of obj.attrs) {
+          const realAttr = await this.getElementAttribute(element, attr.name);
           this.results.push({
-            description: `${css}[${key}] = ${value}`,
+            description: `${css}[${attr.name}] = ${realAttr}`,
             result:
-              (typeof value === "boolean" && attr) || attr == value
+              (typeof realAttr === "boolean" && attr.value) ||
+              realAttr == attr.value
                 ? "PASS"
                 : "FAIL",
           });
         }
       }
 
-      if (obj.innerHTML) {
-        let checkIfArray = Array.isArray(obj.innerHTML);
-        const innerHTML = (await this.getElementText(element)).toString();
-        if (!checkIfArray) {
+      if (obj.texts) {
+        const realText = await this.getElementText(element);
+        for (const text of obj.texts) {
           this.results.push({
-            description: `${css}.innerHTML contains ${obj.innerHTML}`,
-            result: innerHTML.includes(obj.innerHTML) ? "PASS" : "FAIL",
+            description: `${css} contains ${text}`,
+            result: realText.includes(text) ? "PASS" : "FAIL",
           });
-        } else {
-          for (let i = 0; i < obj.innerHTML.length; i++) {
-            if (innerHTML.includes(obj.innerHTML[i])) {
-              this.results.push({
-                description: `${css}.innerHTML contains ${obj.innerHTML}`,
-                result: innerHTML.includes(obj.innerHTML[i]) ? "PASS" : "FAIL",
-              });
-            }
-          }
         }
       }
 

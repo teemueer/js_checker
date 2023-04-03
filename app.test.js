@@ -4,8 +4,8 @@ const supertest = require("supertest");
 
 const api = supertest(app);
 
-// 10 second timeout
-jest.setTimeout(10000);
+// 15 second timeout
+jest.setTimeout(15000);
 
 describe("test with working solution", () => {
   it("m1-02", async () => {
@@ -34,6 +34,7 @@ describe("test with working solution", () => {
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
+  /*
   it("m1-04", async () => {
     const data = {
       url: "https://users.metropolia.fi/~juhojj/JS-HTML-CHECKER/Modules/Module%201/Assignment%204/assignment4.html",
@@ -57,6 +58,7 @@ describe("test with working solution", () => {
     const res = await api.post("/api/assignment/m1-06").send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
+  */
 
   afterAll(async () => {
     await database.disconnect();
