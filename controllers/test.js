@@ -11,16 +11,26 @@ router.get("/", async (req, res) => {
 });
 
 //route for updating current test
-
 router.post("/update", async (req, res) => {
-  const { test } = req.body;
+  const { test, json } = req.body;
+  console.log(json.elements);
   //Get test with ID
   const fetchTest = await Test.findById(test._id);
-  //Replace elements of test. database <- front-end
-  fetchTest.elements = test.elements;
+  //Replace elements of test. database <- front-end¨
+  fetchTest.elements = json.elements.slice(0);
   //Save changes
   await fetchTest.save();
   res.json(fetchTest.toJSON());
+});
+
+router.patch;
+
+// route for deleting tests
+router.delete("/", async (req, res) => {
+  const id = req.params.id;
+  console.log(req.params);
+  res.send(id);
+  //await Test.findOneAndDelete({_id: id})
 });
 
 // route for posting new tests
