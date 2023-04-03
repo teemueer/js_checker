@@ -6,8 +6,8 @@ const Assignment = require("../database/models/assignment");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const tests = await Assignment.find().sort({ name: 1 });
-  res.json(tests);
+  const assignments = await Assignment.find().sort({ name: 1 });
+  res.json(assignments);
 });
 
 //route for updating current test
@@ -48,6 +48,7 @@ router.post("/:name", async (req, res) => {
   const { url } = req.body;
 
   const assignment = await Assignment.findOne({ name });
+  console.log(assignment);
   if (!assignment) {
     res.status(404).json({ message: `Assignment '${name} was not found` });
     return;
