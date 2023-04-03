@@ -1,6 +1,6 @@
 const config = require("../utils/config");
 const mongoose = require("mongoose");
-//const Test = require("./models/test");
+const Assignment = require("./models/assignment");
 
 /*
     TODO:
@@ -29,17 +29,16 @@ const disconnect = async () => {
   }
 };
 
-/*
 //Function to create a new test.
 async function createTest() {
   try {
-    const test = await Tests.create({
+    const assignment = await Assignment.create({
       name: "m1-t2",
       prompts: ["Teemu"],
       elements: [{ name: "body", innerHTML: "Teemu" }],
       atest: "Does this work?",
     });
-    await test.save();
+    await assignment.save();
   } catch (error) {
     console.log("Error while creating test!:" + error.message);
   }
@@ -47,7 +46,10 @@ async function createTest() {
 
 async function getTest(name) {
   try {
-    const result = await Test.find({ name: name }, { _id: 0, __v: 0, name: 0 });
+    const result = await Assignment.find(
+      { name: name },
+      { _id: 0, __v: 0, name: 0 }
+    );
     return result;
   } catch (error) {
     console.log(error.message);
@@ -56,7 +58,7 @@ async function getTest(name) {
 
 async function getAllTests() {
   try {
-    const result = await Test.find();
+    const result = await Assignment.find();
     console.log(result);
     return result;
   } catch (error) {
@@ -67,13 +69,12 @@ async function getAllTests() {
 async function closeConnection() {
   await mongoose.connection.close();
 }
-*/
 
 module.exports = {
   connect,
   disconnect,
-  //getTest,
-  //createTest,
-  //closeConnection,
-  //getAllTests,
+  getTest,
+  createTest,
+  closeConnection,
+  getAllTests,
 };
