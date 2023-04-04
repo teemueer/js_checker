@@ -25,19 +25,3 @@ jobs:
         run: npm test
         env:
           MONGODB_URI: ${{secrets.MONGODB_URI}}
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Use Deploy to Heroku
-        uses: akhileshns/heroku-deploy@v3.12.13
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: html-js-checker
-          heroku_email: ${{secrets.HEROKU_EMAIL}}
-          buildpack: "https://github.com/jontewks/puppeteer-heroku-buildpack.git"
-        env:
-          MONGODB_URI: ${{secrets.MONGODB_URI}}
