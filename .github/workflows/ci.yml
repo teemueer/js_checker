@@ -31,13 +31,7 @@ jobs:
     needs: [build]
     steps:
       - name: Wait for Render Deployment
-        uses: bounceapp/render-action@0.6.0
+        uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-          render-token: ${{ secrets.RENDER_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          service-id: srv-cglu8u1mbg56g40nb2i0
-          retries: 5
-          wait: 16000
-          sleep: 30000
-        env:
-          MONGODB_URI: ${{secrets.MONGODB_URI}}
+          service-id: ${{ secrets.RENDER_SRV }}
+          api-key: ${{ secrets.RENDER_TOKEN }}
