@@ -34,7 +34,6 @@ describe("test with working solution", () => {
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
-  /*
   it("m1-04", async () => {
     const data = {
       url: "https://users.metropolia.fi/~juhojj/JS-HTML-CHECKER/Modules/Module%201/Assignment%204/assignment4.html",
@@ -51,6 +50,7 @@ describe("test with working solution", () => {
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
+  /*
   it("m1-06", async () => {
     const data = {
       url: "https://users.metropolia.fi/~juhojj/JS-HTML-CHECKER/Modules/Module%201/Assignment%206/assignment6.html",

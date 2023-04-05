@@ -2,7 +2,9 @@ class Parser {
   constructor(page, assignment) {
     this.page = page;
 
-    this.elements = assignment.items.filter((assg) => assg.type === "element");
+    this.objects = assignment.items.filter(
+      (assg) => assg.type === "element" || assg.type === "reload"
+    );
 
     this.prompts = assignment.items.filter((assg) => assg.type === "prompt");
     this.promptCount = 0;
@@ -47,10 +49,16 @@ class Parser {
     await this.page.evaluate((element) => element.click(), element);
   }
 
-  async parse(objects = this.elements, path = []) {
+  async parse(objects = this.objects, path = []) {
     for (const obj of objects) {
       // wait for a while for debugging
       //await this.page.waitForTimeout(200);
+
+      if (obj.type === "reload") {
+        await this.page.reload();
+        continue;
+      }
+
       // keep track of nested elements
       const currentPath = [...path, obj];
       // css selector path
@@ -84,9 +92,10 @@ class Parser {
       if (obj.texts) {
         const realText = await this.getElementText(element);
         for (const text of obj.texts) {
+          const regex = new RegExp(text, "i");
           this.results.push({
             description: `${css} contains ${text}`,
-            result: realText.includes(text) ? "PASS" : "FAIL",
+            result: realText.match(regex) ? "PASS" : "FAIL",
           });
         }
       }
