@@ -57,6 +57,22 @@ describe("test with working solution", () => {
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
+  it("m1-08", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~juhojj/JS-HTML-CHECKER/Modules/Module%201/Assignment%208/assignment8.html",
+    };
+    const res = await api.post("/api/assignment/m1-08").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  it("m1-09", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~juhojj/JS-HTML-CHECKER/Modules/Module%201/Assignment%209/assignment9.html",
+    };
+    const res = await api.post("/api/assignment/m1-09").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
   it("m3-11", async () => {
     const data = {
       url: "http://users.metropolia.fi/~teemueer/assignments/module3/t11/11.html",
