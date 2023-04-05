@@ -9,11 +9,15 @@ class Parser {
     this.prompts = assignment.items.filter((assg) => assg.type === "prompt");
     this.promptCount = 0;
 
+    this.confirms = assignment.items.filter((assg) => assg.type === "confirm");
+    this.confirmCount = 0;
+
     this.page.on("dialog", async (dialog) => {
       const type = dialog.type();
-      if (type == "confirm") {
-        await dialog.accept();
-      } else {
+      if (type === "confirm") {
+        const confirmValue = this.confirms[this.confirmCount++].value;
+        confirmValue === "yes" ? await dialog.accept() : await dialog.dismiss();
+      } else if (type === "prompt") {
         const promptValue = this.prompts[this.promptCount++].value;
         await dialog.accept(promptValue);
       }
@@ -25,7 +29,7 @@ class Parser {
   async getElements(css) {
     try {
       // wait for the element to be visible
-      await this.page.waitForSelector(css);
+      //await this.page.waitForSelector(css);
       // return list of elements matching the css selector
       return await this.page.$$(css);
     } catch (e) {
@@ -52,7 +56,7 @@ class Parser {
   async parse(objects = this.objects, path = []) {
     for (const obj of objects) {
       // wait for a while for debugging
-      //await this.page.waitForTimeout(200);
+      await this.page.waitForTimeout(500);
 
       if (obj.type === "reload") {
         await this.page.reload();
@@ -92,10 +96,16 @@ class Parser {
       if (obj.texts) {
         const realText = await this.getElementText(element);
         for (const text of obj.texts) {
-          const regex = new RegExp(text, "i");
+          let found;
+          if (text.regex) {
+            const regex = new RegExp(text.value, "i");
+            found = realText.match(regex);
+          } else {
+            found = realText.includes(text.value);
+          }
           this.results.push({
-            description: `${css} contains ${text}`,
-            result: realText.match(regex) ? "PASS" : "FAIL",
+            description: `${css} contains ${text.value}`,
+            result: found ? "PASS" : "FAIL",
           });
         }
       }

@@ -48,6 +48,7 @@ router.post("/:name", async (req, res) => {
   const { url } = req.body;
 
   const assignment = await Assignment.findOne({ name });
+  console.log(assignment);
   if (!assignment) {
     res.status(404).json({ message: `Assignment '${name} was not found` });
     return;
