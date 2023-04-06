@@ -1,6 +1,7 @@
 class Parser {
   constructor(page, assignment) {
     this.page = page;
+    this.results = [];
 
     this.objects = assignment.items.filter(
       (assg) => assg.type === "element" || assg.type === "reload"
@@ -17,13 +18,22 @@ class Parser {
       if (type === "confirm") {
         const confirmValue = this.confirms[this.confirmCount++].value;
         confirmValue === "yes" ? await dialog.accept() : await dialog.dismiss();
+        return;
       } else if (type === "prompt") {
         const promptValue = this.prompts[this.promptCount++].value;
         await dialog.accept(promptValue);
+        return;
       }
     });
 
-    this.results = [];
+    this.consoleLogs = assignment.items.filter(
+      (assg) => assg.type === "console"
+    );
+
+    this.siteConsoleLogs = "";
+    this.page.on("console", (message) => {
+      if (message.type() === "log") this.siteConsoleLogs += message.text();
+    });
   }
 
   async getElements(css) {
@@ -56,7 +66,7 @@ class Parser {
   async parse(objects = this.objects, path = []) {
     for (const obj of objects) {
       // wait for a while for debugging
-      await this.page.waitForTimeout(500);
+      //await this.page.waitForTimeout(500);
 
       if (obj.type === "reload") {
         await this.page.reload();
@@ -119,6 +129,20 @@ class Parser {
       if (obj.children) {
         await this.parse(obj.children, currentPath);
       }
+    }
+
+    for (const consoleLog of this.consoleLogs) {
+      let found;
+      if (consoleLog.regex) {
+        const regex = new RegExp(consoleLog.value, "i");
+        found = this.siteConsoleLogs.match(regex);
+      } else {
+        found = this.siteConsoleLogs.includes(consoleLog.value);
+      }
+      this.results.push({
+        description: `console contains ${this.siteConsoleLogs}`,
+        result: found ? "PASS" : "FAIL",
+      });
     }
 
     return this.results;

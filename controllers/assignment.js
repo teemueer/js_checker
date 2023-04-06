@@ -12,22 +12,15 @@ router.get("/", async (req, res) => {
 
 //route for updating current test
 router.patch("/:id", async (req, res) => {
-  const { name, items } = req.body;
   const id = req.params.id;
-  const fetchAssignment = await Assignment.findById(id);
-
-  fetchAssignment.name == name;
-  fetchAssignment.items = items.slice(0);
-
-  await fetchAssignment.save();
-  res.json(fetchAssignment.toJSON());
+  const updatedAssignment = await Assignment.findByIdAndUpdate(id, req.body);
+  res.json(updatedAssignment.toJSON());
 });
 
 // route for deleting tests
 router.delete("/:id", async (req, res) => {
   const id = req.params.id;
-  console.log(id);
-  await Assignment.findOneAndDelete({ _id: id });
+  await Assignment.findByIdAndRemove(id);
   res.send(id);
 });
 
@@ -60,18 +53,22 @@ router.post("/:name", async (req, res) => {
   });
 
   const [page] = await browser.pages();
+  page.setDefaultNavigationTimeout(5000);
 
   const parser = new Parser(page, assignment);
 
-  await page.goto(url, {
-    waitUntil: "domcontentloaded",
-  });
-
-  const results = await parser.parse();
-
-  await browser.close();
-
-  res.json(results || []);
+  try {
+    await page.goto(url, {
+      waitUntil: "domcontentloaded",
+    });
+    const results = await parser.parse();
+    res.json(results);
+  } catch (error) {
+    console.error(error.message);
+    res.json([]);
+  } finally {
+    await browser.close();
+  }
 });
 
 router.patch("/", async (req, res) => {});

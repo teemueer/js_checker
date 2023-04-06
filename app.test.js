@@ -8,6 +8,14 @@ const api = supertest(app);
 jest.setTimeout(15000);
 
 describe("test with working solution", () => {
+  it("m1-01", async () => {
+    const data = {
+      url: "http://users.metropolia.fi/~teemueer/assignments/module1/01/01.html",
+    };
+    const res = await api.post("/api/assignment/m1-01").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
   it("m1-02", async () => {
     const data = {
       url: "http://users.metropolia.fi/~teemueer/assignments/module1/02/02.html",
