@@ -1,1 +1,0 @@
-*{box-sizing:border-box}body{width:800px}table{border-collapse:collapse;width:100%;background-color:beige}td{border:1px dotted black;text-align:left}tr td:first-child{width:1%;background-color:tan;padding-right:1em}input[type=text]{width:100%}.assignment{border:2px solid black;margin-top:.5em;padding:.2em}.prompt,.element,.reload{display:block;margin:5px;border:1px solid #000}
