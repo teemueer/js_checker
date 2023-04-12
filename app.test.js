@@ -7,10 +7,10 @@ const api = supertest(app);
 // 15 second timeout
 jest.setTimeout(15000);
 
-describe("test with working solution", () => {
+describe("Working solutions", () => {
   it("m1-01", async () => {
     const data = {
-      url: "http://users.metropolia.fi/~teemueer/assignments/module1/01/01.html",
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m1-01",
     };
     const res = await api.post("/api/assignment/m1-01").send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
@@ -18,7 +18,7 @@ describe("test with working solution", () => {
 
   it("m1-02", async () => {
     const data = {
-      url: "http://users.metropolia.fi/~teemueer/assignments/module1/02/02.html",
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m1-02",
     };
     const res = await api.post("/api/assignment/m1-02").send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
@@ -26,7 +26,7 @@ describe("test with working solution", () => {
 
   it("m1-03", async () => {
     const data = {
-      url: "http://users.metropolia.fi/~teemueer/assignments/module1/03/03.html",
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m1-03",
     };
 
     const res = await api.post("/api/assignment/m1-03").send(data);
@@ -81,9 +81,191 @@ describe("test with working solution", () => {
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
+  it("m2-01", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-01",
+    };
+    const res = await api.post("/api/assignment/m2-01").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  it("m2-02", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-02",
+    };
+    const res = await api.post("/api/assignment/m2-02").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  it("m2-03", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-03",
+    };
+
+    const res = await api.post("/api/assignment/m2-03").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  it("m2-04", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-04",
+    };
+
+    const res = await api.post("/api/assignment/m2-04").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  it("m2-05", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-05",
+    };
+
+    const res = await api.post("/api/assignment/m2-05").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  it("m2-06", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-06",
+    };
+
+    const res = await api.post("/api/assignment/m2-06").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  it("m2-07", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-07",
+    };
+
+    const res = await api.post("/api/assignment/m2-07").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  /*
+  it("m2-08", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-08",
+    };
+
+    const res = await api.post("/api/assignment/m2-08").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+  */
+
+  /*
+  it("m2-09", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-09",
+    };
+
+    const res = await api.post("/api/assignment/m2-09").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+  */
+
+  it("m2-10", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-10",
+    };
+
+    const res = await api.post("/api/assignment/m2-10").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  it("m3-01", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-01",
+    };
+    const res = await api.post("/api/assignment/m3-01").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  it("m3-02", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-02",
+    };
+    const res = await api.post("/api/assignment/m3-02").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  it("m3-03", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-03",
+    };
+
+    const res = await api.post("/api/assignment/m3-03").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  it("m3-04", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-04",
+    };
+
+    const res = await api.post("/api/assignment/m3-04").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  it("m3-05", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-05",
+    };
+
+    const res = await api.post("/api/assignment/m3-05").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  /*
+  it("m3-06", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-06",
+    };
+
+    const res = await api.post("/api/assignment/m3-06").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+  */
+
+  it("m3-07", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-07",
+    };
+
+    const res = await api.post("/api/assignment/m3-07").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  it("m3-08", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-08",
+    };
+
+    const res = await api.post("/api/assignment/m3-08").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  it("m3-09", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-09",
+    };
+
+    const res = await api.post("/api/assignment/m3-09").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
+  it("m3-10", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-10",
+    };
+
+    const res = await api.post("/api/assignment/m3-10").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
   it("m3-11", async () => {
     const data = {
-      url: "http://users.metropolia.fi/~teemueer/assignments/module3/t11/11.html",
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-11",
     };
 
     const res = await api.post("/api/assignment/m3-11").send(data);

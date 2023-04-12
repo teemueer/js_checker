@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "jest app.test.js",
+    "test": "jest app.test.js --detectOpenHandles",
     "build:ui": "rm -rf dist && cd ../js_checker_frontend && npm run build && cp -r dist ../js_checker",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
