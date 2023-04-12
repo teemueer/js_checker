@@ -7,7 +7,7 @@ const api = supertest(app);
 // 15 second timeout
 jest.setTimeout(15000);
 
-describe("Module 1 with working solutions", () => {
+describe("Working solutions", () => {
   it("m1-01", async () => {
     const data = {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m1-01",
@@ -81,12 +81,6 @@ describe("Module 1 with working solutions", () => {
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
-  afterAll(async () => {
-    await database.disconnect();
-  });
-});
-
-describe("Module 2 with working solutions", () => {
   it("m2-01", async () => {
     const data = {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-01",
@@ -179,12 +173,6 @@ describe("Module 2 with working solutions", () => {
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
-  afterAll(async () => {
-    await database.disconnect();
-  });
-});
-
-describe("Module 3 with working solutions", () => {
   it("m3-01", async () => {
     const data = {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-01",

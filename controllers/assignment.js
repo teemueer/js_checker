@@ -46,8 +46,10 @@ router.post("/:name", async (req, res) => {
     return;
   }
 
+  console.log(`Checking ${url} for assignment ${assignment.name}...`);
+
   const browser = await puppeteer.launch({
-    headless: false,
+    //headless: false,
     args: ["--no-sandbox"],
   });
 
@@ -66,7 +68,7 @@ router.post("/:name", async (req, res) => {
     console.error(error.message);
     res.json([]);
   } finally {
-    await page.waitForTimeout(5000);
+    //await page.waitForTimeout(5000);
     await browser.close();
   }
 });
