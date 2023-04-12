@@ -1,10 +1,15 @@
+const axios = require("axios");
+
 class Parser {
   constructor(page, assignment) {
     this.page = page;
     this.results = [];
 
     this.objects = assignment.items.filter(
-      (assg) => assg.type === "element" || assg.type === "reload"
+      (assg) =>
+        assg.type === "element" ||
+        assg.type === "reload" ||
+        assg.type === "script"
     );
 
     this.prompts = assignment.items.filter((assg) => assg.type === "prompt");
@@ -31,15 +36,20 @@ class Parser {
     );
 
     this.siteConsoleLogs = "";
-    this.page.on("console", (message) => {
-      if (message.type() === "log") this.siteConsoleLogs += message.text();
+    this.page.on("console", async (message) => {
+      if (message.type() === "log") {
+        const args = await Promise.all(
+          message.args().map((arg) => arg.jsonValue())
+        );
+        this.siteConsoleLogs += args.toString();
+      }
     });
   }
 
   async getElements(css) {
     try {
       // wait for the element to be visible
-      //await this.page.waitForSelector(css);
+      await this.page.waitForSelector(css);
       // return list of elements matching the css selector
       return await this.page.$$(css);
     } catch (e) {
@@ -63,6 +73,18 @@ class Parser {
     await this.page.evaluate((element) => element.click(), element);
   }
 
+  async hoverElement(css) {
+    await this.page.hover(css);
+  }
+
+  async inputElement(element, value) {
+    await this.page.evaluate(
+      (element, value) => (element.value = value),
+      element,
+      value
+    );
+  }
+
   async parse(objects = this.objects, path = []) {
     for (const obj of objects) {
       // wait for a while for debugging
@@ -70,6 +92,23 @@ class Parser {
 
       if (obj.type === "reload") {
         await this.page.reload();
+        continue;
+      }
+
+      if (obj.type === "script") {
+        const scripts = await this.getElements("script");
+        let found = false;
+        for (const script of scripts) {
+          const src = await this.page.evaluate((script) => script.src, script);
+          const res = await axios.get(src);
+          const regex = new RegExp(obj.value, "s");
+          found = res.data.match(regex);
+          if (found) break;
+        }
+        this.results.push({
+          description: `${obj.value} was found`,
+          result: found ? "PASS" : "FAIL",
+        });
         continue;
       }
 
@@ -120,9 +159,15 @@ class Parser {
         }
       }
 
+      if (obj.input) {
+        await this.inputElement(element, obj.input);
+      }
+
       if (obj.action) {
         if (obj.action == "click") {
           await this.clickElement(element);
+        } else if (obj.action == "hover") {
+          await this.hoverElement(css);
         }
       }
 
@@ -131,10 +176,11 @@ class Parser {
       }
     }
 
+    await this.page.waitForTimeout(1000);
     for (const consoleLog of this.consoleLogs) {
       let found;
       if (consoleLog.regex) {
-        const regex = new RegExp(consoleLog.value, "i");
+        const regex = new RegExp(consoleLog.value, "s");
         found = this.siteConsoleLogs.match(regex);
       } else {
         found = this.siteConsoleLogs.includes(consoleLog.value);

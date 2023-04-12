@@ -41,14 +41,13 @@ router.post("/:name", async (req, res) => {
   const { url } = req.body;
 
   const assignment = await Assignment.findOne({ name });
-  console.log(assignment);
   if (!assignment) {
     res.status(404).json({ message: `Assignment '${name} was not found` });
     return;
   }
 
   const browser = await puppeteer.launch({
-    //headless: false,
+    headless: false,
     args: ["--no-sandbox"],
   });
 
@@ -67,6 +66,7 @@ router.post("/:name", async (req, res) => {
     console.error(error.message);
     res.json([]);
   } finally {
+    await page.waitForTimeout(5000);
     await browser.close();
   }
 });
