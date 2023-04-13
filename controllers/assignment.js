@@ -1,3 +1,4 @@
+const config = require("../utils/config");
 const express = require("express");
 const puppeteer = require("puppeteer");
 const Parser = require("../utils/parser");
@@ -49,7 +50,7 @@ router.post("/:name", async (req, res) => {
   console.log(`Checking ${url} for assignment ${assignment.name}...`);
 
   const browser = await puppeteer.launch({
-    //headless: false,
+    headless: config.DEBUG_MODE ? false : true,
     args: ["--no-sandbox"],
   });
 
@@ -68,7 +69,7 @@ router.post("/:name", async (req, res) => {
     console.error(error.message);
     res.json([{ description: "Site did not work properly", result: "FAIL" }]);
   } finally {
-    //await page.waitForTimeout(5000);
+    if (config.DEBUG) await page.waitForTimeout(5000);
     await browser.close();
   }
 });

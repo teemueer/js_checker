@@ -1,3 +1,4 @@
+const config = require("./config");
 const axios = require("axios");
 
 class Parser {
@@ -50,7 +51,7 @@ class Parser {
   async getElements(css) {
     try {
       // wait for the element to be visible
-      await this.page.waitForSelector(css, { timeout: 500 });
+      await this.page.waitForSelector(css, { timeout: 1000 });
       // return list of elements matching the css selector
       return await this.page.$$(css);
     } catch (e) {
@@ -90,7 +91,7 @@ class Parser {
     for (const obj of objects) {
       console.log(obj);
       // wait for a while for debugging
-      //await this.page.waitForTimeout(500);
+      if (config.DEBUG_MODE) await this.page.waitForTimeout(500);
 
       if (obj.type === "reload") {
         await this.page.reload();
