@@ -66,7 +66,7 @@ router.post("/:name", async (req, res) => {
     res.json(results);
   } catch (error) {
     console.error(error.message);
-    res.json([]);
+    res.json([{ description: "Site did not work properly", result: "FAIL" }]);
   } finally {
     //await page.waitForTimeout(5000);
     await browser.close();
