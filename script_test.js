@@ -30,7 +30,7 @@ const hurr = async () => {
     const _regex = /for\s*\(\s*let\s+\w+\s*=\s*\d+\s*;\s*\w+\s*\<\s*\w+\s*;/g;
 
     const regex =
-      /for\s*\(\s*let\s+\w+\s*=\s*\w+;\s*\w+\s*[<>=!]+\s*\w+\s*;\s*\w+.*?(?=;)/g;
+      /for\s*\(.*;.*;.*\)/g;
 
     m = res.data.match(regex);
     console.log(m);

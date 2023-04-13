@@ -38,6 +38,7 @@ class Parser {
     this.siteConsoleLogs = "";
     this.page.on("console", async (message) => {
       if (message.type() === "log") {
+        console.log(message);
         const args = await Promise.all(
           message.args().map((arg) => arg.jsonValue())
         );
@@ -49,7 +50,7 @@ class Parser {
   async getElements(css) {
     try {
       // wait for the element to be visible
-      await this.page.waitForSelector(css);
+      await this.page.waitForSelector(css, { timeout: 500 });
       // return list of elements matching the css selector
       return await this.page.$$(css);
     } catch (e) {
@@ -87,6 +88,7 @@ class Parser {
 
   async parse(objects = this.objects, path = []) {
     for (const obj of objects) {
+      console.log(obj);
       // wait for a while for debugging
       //await this.page.waitForTimeout(500);
 

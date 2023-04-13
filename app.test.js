@@ -272,6 +272,15 @@ describe("Working solutions", () => {
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
+  it("tvmaze", async () => {
+    const data = {
+      url: "https://users.metropolia.fi/~teemueer/html_js_checker/tvmaze",
+    };
+
+    const res = await api.post("/api/assignment/tvmaze").send(data);
+    expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
+  });
+
   afterAll(async () => {
     await database.disconnect();
   });
