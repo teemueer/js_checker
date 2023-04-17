@@ -108,10 +108,12 @@ class Parser {
           found = res.data.match(regex);
           if (found) break;
         }
-        this.results.push({
-          description: `${obj.value} was found`,
-          result: found ? "PASS" : "FAIL",
-        });
+        if (!found) {
+          this.results.push({
+            description: obj.description ? obj.description : obj.value,
+            result: "FAIL",
+          });
+        }
         continue;
       }
 
@@ -122,26 +124,32 @@ class Parser {
       // elements on page matching the css selector
       const elements = await this.getElements(css);
 
-      this.results.push({
-        description: `${css} was found`,
-        result: elements.length ? "PASS" : "FAIL",
-      });
-
-      if (!elements.length) continue;
+      if (!elements.length) {
+        this.results.push({
+          description: obj.description ? obj.description : css,
+          result: "FAIL",
+        });
+        continue;
+      }
 
       const element = elements[0];
 
       if (obj.attrs) {
         for (const attr of obj.attrs) {
           const realAttr = await this.getElementAttribute(element, attr.name);
-          this.results.push({
-            description: `${css}[${attr.name}] = ${realAttr}`,
-            result:
-              (typeof realAttr === "boolean" && attr.value) ||
-              realAttr == attr.value
-                ? "PASS"
-                : "FAIL",
-          });
+
+          const pass =
+            (typeof realAttr === "boolean" && attr.value) ||
+            realAttr == attr.value;
+
+          if (!pass) {
+            this.results.push({
+              description: obj.description
+                ? obj.description
+                : `${css}[${attr.name}]`,
+              result: "FAIL",
+            });
+          }
         }
       }
 
@@ -155,10 +163,13 @@ class Parser {
           } else {
             found = realText.includes(text.value);
           }
-          this.results.push({
-            description: `${css} contains ${text.value}`,
-            result: found ? "PASS" : "FAIL",
-          });
+
+          if (!found) {
+            this.results.push({
+              description: obj.description ? obj.description : css,
+              result: "FAIL",
+            });
+          }
         }
       }
 
@@ -188,10 +199,15 @@ class Parser {
       } else {
         found = this.siteConsoleLogs.includes(consoleLog.value);
       }
-      this.results.push({
-        description: `console contains ${this.siteConsoleLogs}`,
-        result: found ? "PASS" : "FAIL",
-      });
+
+      if (!found) {
+        this.results.push({
+          description: consoleLog.description
+            ? consoleLog.description
+            : consoleLog.value,
+          result: "FAIL",
+        });
+      }
     }
 
     return this.results;
