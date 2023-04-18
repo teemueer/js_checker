@@ -93,12 +93,14 @@ class Parser {
         for (const attr of obj.attrs) {
           const realAttr = await this.getElementAttribute(element, attr.name);
           this.results.push({
-            description: `${css}[${attr.name}] = ${realAttr}`,
+            description: obj.description,
+            //description: `${css}[${attr.name}] = ${realAttr}`,
             result:
               (typeof realAttr === "boolean" && attr.value) ||
               realAttr == attr.value
                 ? "PASS"
                 : "FAIL",
+            issue: `${attr.name} = ${realAttr}`,
           });
         }
       }
@@ -114,7 +116,8 @@ class Parser {
             found = realText.includes(text.value);
           }
           this.results.push({
-            description: `${css} contains ${text.value}`,
+            description: obj.description,
+            issue: `${css} contains ${text.value}`,
             result: found ? "PASS" : "FAIL",
           });
         }
@@ -139,6 +142,7 @@ class Parser {
       } else {
         found = this.siteConsoleLogs.includes(consoleLog.value);
       }
+      //console.log(this.consoleLogs);
       this.results.push({
         description: `console contains ${this.siteConsoleLogs}`,
         result: found ? "PASS" : "FAIL",
