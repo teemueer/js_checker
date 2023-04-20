@@ -1,6 +1,6 @@
 const config = require("../utils/config");
 const mongoose = require("mongoose");
-const Assignment = require("./models/assignment");
+const Assignment = require("../models/assignment");
 
 /*
     TODO:
