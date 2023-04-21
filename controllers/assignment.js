@@ -86,7 +86,10 @@ router.post("/:name", async (req, res) => {
       if (updateStudent != null) {
         await Student.updateOne(
           { _id: student[0]._id, "results.id": assignment.id },
-          { $set: { "results.$.result": isPass } }
+          {
+            $set: { "results.$.result": isPass },
+            $inc: { "results.$.attempts": 1 },
+          }
         );
       } else {
         //Create a new assignment.
@@ -97,6 +100,7 @@ router.post("/:name", async (req, res) => {
               results: {
                 id: assignment.id,
                 name: name,
+                attempts: 1,
                 result: isPass,
               },
             },
@@ -110,6 +114,7 @@ router.post("/:name", async (req, res) => {
           {
             id: assignment.id,
             name: name,
+            attempts: 1,
             result: isPass,
           },
         ],
