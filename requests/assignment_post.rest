@@ -1,0 +1,9 @@
+POST http://localhost:3000/api/courses/643f97aa7233d3f07ebb94c7
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlZW11IiwiaWQiOiI2NDNmOTc5NTcyMzNkM2YwN2ViYjk0YzMiLCJpYXQiOjE2ODE5MDM0NjksImV4cCI6MTY4MTk4OTg2OX0.-lqr0if-AFnMPSUv6dnkAECHMSdVbo35rbs1t33vjG8
+{
+    "name": "m1-01",
+    "items": [
+        {"hurr": "durr"}
+    ]
+}
