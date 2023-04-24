@@ -3,6 +3,7 @@ const express = require("express");
 const puppeteer = require("puppeteer");
 const Parser = require("../utils/parser");
 const Assignment = require("../database/models/assignment");
+const Student = require("../database/models/student");
 
 const router = express.Router();
 
@@ -47,6 +48,12 @@ router.post("/:name", async (req, res) => {
     return;
   }
 
+  //Parse assignment url for username
+  const address = new URL(url);
+  const username = address.pathname.split("/")[1].substring(1);
+  console.log(`${username} assessing: ${name}`);
+  const student = await Student.find({ name: username });
+
   console.log(`Checking ${url} for assignment ${assignment.name}...`);
 
   const browser = await puppeteer.launch({
@@ -64,6 +71,56 @@ router.post("/:name", async (req, res) => {
       waitUntil: "domcontentloaded",
     });
     const results = await parser.parse();
+    //Just holds the text value that will be input to an assigment on submission.
+    let isPass = results.length == 0 ? "PASS" : "FAIL";
+
+    if (student.length != 0) {
+      //Find if assignment has been inserted once to students data
+      const updateStudent = await Student.findOne({
+        _id: student[0]._id,
+        results: {
+          $elemMatch: { id: assignment.id },
+        },
+      });
+      //If User has assignment done replace pass/fail value
+      if (updateStudent != null) {
+        await Student.updateOne(
+          { _id: student[0]._id, "results.id": assignment.id },
+          {
+            $set: { "results.$.result": isPass },
+            $inc: { "results.$.attempts": 1 },
+          }
+        );
+      } else {
+        //Create a new assignment.
+        await Student.updateOne(
+          { _id: student[0]._id },
+          {
+            $push: {
+              results: {
+                id: assignment.id,
+                name: name,
+                attempts: 1,
+                result: isPass,
+              },
+            },
+          }
+        );
+      }
+    } else {
+      const student = new Student({
+        name: username,
+        results: [
+          {
+            id: assignment.id,
+            name: name,
+            attempts: 1,
+            result: isPass,
+          },
+        ],
+      });
+      await student.save();
+    }
     res.json(results);
   } catch (error) {
     console.error(error.message);
@@ -75,5 +132,4 @@ router.post("/:name", async (req, res) => {
 });
 
 router.patch("/", async (req, res) => {});
-
 module.exports = router;
