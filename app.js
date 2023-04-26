@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-//require("express-async-errors");
+require("express-async-errors");
 const database = require("./database/db");
 const usersRouter = require("./controllers/users");
 const loginRouter = require("./controllers/login");

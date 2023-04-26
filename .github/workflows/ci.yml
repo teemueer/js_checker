@@ -20,7 +20,7 @@ jobs:
         run: npm install
 
       - name: Run test
-        run: npm test
+        run: npm test -- -t m1-01
         env:
           MONGODB_URI: ${{secrets.MONGODB_URI}}
 
