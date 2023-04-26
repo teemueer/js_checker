@@ -1,16 +1,28 @@
 const mongoose = require("mongoose");
+const uniqueValidator = require("mongoose-unique-validator");
 
 const studentSchema = new mongoose.Schema(
   {
-    name: {
+    username: {
       type: String,
       required: true,
       unique: true,
     },
-    results: [],
+    results: [
+      {
+        assignment: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Assignment",
+        },
+        attempts: Number,
+        passed: Boolean,
+      },
+    ],
   },
   { versionKey: false }
 );
+
+studentSchema.plugin(uniqueValidator);
 
 const Student = mongoose.model("Student", studentSchema);
 

@@ -3,7 +3,7 @@ const Student = require("../models/student");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const assignments = await Student.find().sort({ name: 1 });
+  const assignments = await Student.find().sort({ username: 1 });
   res.json(assignments);
 });
 

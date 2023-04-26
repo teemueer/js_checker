@@ -7,8 +7,10 @@ const { userExtractor } = require("../utils/middleware");
 const router = express.Router();
 
 // Route for getting all courses
-router.get("/", async (req, res) => {
-  const courses = await Course.find({})
+router.get("/", userExtractor, async (req, res) => {
+  const user = req.user;
+  console.log(user);
+  const courses = await Course.find({ user: user._id })
     .populate("user", { username: 0, courses: 0 })
     .populate("assignments", {
       items: 0,
@@ -18,31 +20,30 @@ router.get("/", async (req, res) => {
 });
 
 // Route for getting a course by ID
-router.get("/:id", async (req, res) => {
+router.get("/:id", userExtractor, async (req, res) => {
   const courseId = req.params.id;
-  const course = await Course.findById(courseId)
-    .populate("user", { username: 0, courses: 0 })
-    .populate("assignments", {
-      name: 1,
+  const user = req.user;
+
+  const course = await Course.findOne({ _id: courseId, user }).populate(
+    "assignments",
+    {
       items: 0,
       course: 0,
-    });
+    }
+  );
+
   res.json(course);
 });
 
 // Route for posting a new course
 router.post("/", userExtractor, async (req, res) => {
   const user = req.user;
-
-  if (!user) {
-    return res.status(401).json({
-      error: "invalid user",
-    });
-  }
+  console.log(user);
 
   const body = req.body;
   const course = new Course({
     name: body.name,
+    description: body.description,
     user: user._id,
   });
 
@@ -58,6 +59,8 @@ router.post("/", userExtractor, async (req, res) => {
 // Route for posting a new assignment for a course by ID
 router.post("/:id", userExtractor, async (req, res) => {
   const courseId = req.params.id;
+  const user = req.user;
+
   const course = await Course.findById(courseId);
 
   if (!course) {
@@ -66,7 +69,6 @@ router.post("/:id", userExtractor, async (req, res) => {
     });
   }
 
-  const user = req.user;
   if (!user._id.equals(course.user)) {
     return res.status(401).json({
       error: "invalid user",
@@ -76,8 +78,11 @@ router.post("/:id", userExtractor, async (req, res) => {
   const body = req.body;
   const assignment = new Assignment({
     name: body.name,
+    description: body.description,
+    points: body.points,
     items: body.items,
-    course: courseId,
+    course: course._id,
+    user: user._id,
   });
 
   const savedAssignment = await assignment.save();
@@ -141,7 +146,7 @@ router.delete("/:id", userExtractor, async (req, res) => {
   await course.deleteOne();
 
   // Delete this course from the user
-  user.courses = user.courses.filter((course) => course._id === courseId);
+  user.courses = user.courses.filter((course) => !course._id.equals(courseId));
   await user.save();
 
   res.send(course);
