@@ -39,7 +39,7 @@ class Parser {
     this.siteConsoleLogs = "";
     this.page.on("console", async (message) => {
       if (message.type() === "log") {
-        console.log(message);
+        //console.log(message);
         const args = await Promise.all(
           message.args().map((arg) => arg.jsonValue())
         );
@@ -89,7 +89,7 @@ class Parser {
 
   async parse(objects = this.objects, path = []) {
     for (const obj of objects) {
-      console.log(obj);
+      //console.log(obj);
       // wait for a while for debugging
       if (config.DEBUG_MODE) await this.page.waitForTimeout(500);
 
@@ -165,7 +165,7 @@ class Parser {
           }
 
           if (!found) {
-            console.log("error", realText);
+            //console.log("error", realText);
             this.results.push({
               description: obj.description ? obj.description : css,
               result: "FAIL",

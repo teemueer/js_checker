@@ -7,9 +7,9 @@ const Assignment = require("../models/assignment");
 */
 
 // Connect to the database
-const connect = async () => {
+const connect = () => {
   try {
-    const connection = await mongoose.connect(config.MONGODB_URI, {
+    const connection = mongoose.connect(config.MONGODB_URI, {
       autoIndex: true,
     });
     console.log("Connected to MongoDB", config.MONGODB_URI);
