@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-require("express-async-errors");
+//require("express-async-errors");
 const database = require("./database/db");
 const usersRouter = require("./controllers/users");
 const loginRouter = require("./controllers/login");
@@ -25,6 +25,6 @@ app.use("/api/assignments", assignmentsRouter);
 app.use("/api/students", studentsRouter);
 
 app.use(middleware.unknownEndpoint);
-app.use(middleware.errorHandler);
+//app.use(middleware.errorHandler);
 
 module.exports = app;
