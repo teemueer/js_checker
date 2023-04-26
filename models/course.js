@@ -5,10 +5,10 @@ const courseSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      unique: true,
       required: true,
       minglength: 3,
     },
+    description: String,
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

@@ -165,6 +165,7 @@ class Parser {
           }
 
           if (!found) {
+            console.log("error", realText);
             this.results.push({
               description: obj.description ? obj.description : css,
               result: "FAIL",

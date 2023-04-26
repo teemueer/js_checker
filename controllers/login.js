@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   const body = req.body;
+  console.log(body);
 
   const user = await User.findOne({ username: body.username });
 

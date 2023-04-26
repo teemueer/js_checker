@@ -9,16 +9,17 @@ const Course = require("../models/course");
 const router = express.Router();
 
 // Route for getting all assignments
-router.get("/", async (req, res) => {
-  const assignments = await Assignment.find();
+router.get("/", userExtractor, async (req, res) => {
+  const user = req.user;
+  const assignments = await Assignment.find({ user });
   res.json(assignments);
 });
 
 // Route for getting assignment by ID
-router.get("/:id", async (req, res) => {
+router.get("/:id", userExtractor, async (req, res) => {
   const assignmentId = req.params.id;
-  const assignments = await Assignment.findById(assignmentId);
-  res.json(assignments);
+  const assignment = await Assignment.findById(assignmentId);
+  res.json(assignment);
 });
 
 // Route for patching assignment by ID
@@ -44,6 +45,8 @@ router.patch("/:id", userExtractor, async (req, res) => {
   const body = req.body;
   const updatedAssignment = await assignment.updateOne({
     name: body.name,
+    description: body.description,
+    points: body.points,
     items: body.items,
   });
 
@@ -82,13 +85,15 @@ router.delete("/:id", userExtractor, async (req, res) => {
 });
 
 // Route for using assignment
-router.post("/:name", async (req, res) => {
-  const name = req.params.name;
+router.post("/:id", async (req, res) => {
+  const assignmentId = req.params.id;
   const { url } = req.body;
 
-  const assignment = await Assignment.findOne({ name });
+  const assignment = await Assignment.findById(assignmentId);
   if (!assignment) {
-    res.status(404).json({ message: `Assignment '${name} was not found` });
+    res
+      .status(404)
+      .json({ message: `Assignment '${assignmentId} was not found` });
     return;
   }
 
