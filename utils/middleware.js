@@ -22,6 +22,7 @@ const userExtractor = async (req, res, next) => {
 const errorHandler = (error, request, response, next) => {
   console.error(error.message);
 
+  /*
   switch (error.name) {
     case "CastError":
       return response.status(400).send({ error: "malformed id" });
@@ -32,6 +33,7 @@ const errorHandler = (error, request, response, next) => {
     case "TokenExpiredError":
       return response.status(401).json({ error: "token expired" });
   }
+  */
 
   next(error);
 };
