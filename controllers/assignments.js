@@ -91,10 +91,9 @@ router.post("/:id", async (req, res) => {
 
   const assignment = await Assignment.findById(assignmentId);
   if (!assignment) {
-    res
+    return res
       .status(404)
       .json({ message: `Assignment '${assignmentId} was not found` });
-    return;
   }
 
   console.log(`Checking ${url} for assignment ${assignment.name}...`);
