@@ -39,7 +39,6 @@ class Parser {
     this.siteConsoleLogs = "";
     this.page.on("console", async (message) => {
       if (message.type() === "log") {
-        console.log(message);
         const args = await Promise.all(
           message.args().map((arg) => arg.jsonValue())
         );

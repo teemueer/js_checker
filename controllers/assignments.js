@@ -9,17 +9,23 @@ const Course = require("../models/course");
 
 const router = express.Router();
 
+router.get("/test", async (req, res) => {
+  const assignments = await Assignment.find({}, { _id: 1, name: 1 });
+  res.json(assignments);
+});
+
 // Route for getting all assignments
-router.get("/", async (req, res) => {
-  const assignments = await Assignment.find();
+router.get("/", userExtractor, async (req, res) => {
+  const user = req.user;
+  const assignments = await Assignment.find({ user });
   res.json(assignments);
 });
 
 // Route for getting assignment by ID
-router.get("/:id", async (req, res) => {
+router.get("/:id", userExtractor, async (req, res) => {
   const assignmentId = req.params.id;
-  const assignments = await Assignment.findById(assignmentId);
-  res.json(assignments);
+  const assignment = await Assignment.findById(assignmentId);
+  res.json(assignment);
 });
 
 // Route for patching assignment by ID
@@ -45,6 +51,8 @@ router.patch("/:id", userExtractor, async (req, res) => {
   const body = req.body;
   const updatedAssignment = await assignment.updateOne({
     name: body.name,
+    description: body.description,
+    points: body.points,
     items: body.items,
   });
 
@@ -75,29 +83,36 @@ router.delete("/:id", userExtractor, async (req, res) => {
 
   // Delete this assignment from the course
   course.assignments = course.assignments.filter(
-    (assignment) => assignment._id === assignmentId
+    (assignment) => !assignment._id.equals(assignmentId)
   );
+
   await course.save();
 
   res.send(assignment);
 });
 
 // Route for using assignment
-router.post("/:name", async (req, res) => {
-  const name = req.params.name;
+router.post("/:id", async (req, res) => {
+  const assignmentId = req.params.id;
   const { url } = req.body;
 
-  const assignment = await Assignment.findOne({ name });
-  if (!assignment) {
-    res.status(404).json({ message: `Assignment '${name} was not found` });
-    return;
+  // Parse assignment url for username
+  const regex = /https:\/\/users\.metropolia\.fi\/~(\w+)?/;
+  const m = url.match(regex);
+  const username = m ? m[1] : null;
+
+  if (!username) {
+    return res
+      .status(403)
+      .json({ message: "Testing allowed from users.metropolia only" });
   }
 
-  //Parse assignment url for username
-  const address = new URL(url);
-  const username = address.pathname.split("/")[1].substring(1);
-  console.log(`${username} assessing: ${name}`);
-  const student = await Student.find({ name: username });
+  const assignment = await Assignment.findById(assignmentId);
+  if (!assignment) {
+    return res
+      .status(404)
+      .json({ message: `Assignment '${assignmentId} was not found` });
+  }
 
   console.log(`Checking ${url} for assignment ${assignment.name}...`);
 
@@ -111,69 +126,48 @@ router.post("/:name", async (req, res) => {
 
   const parser = new Parser(page, assignment);
 
+  let results;
   try {
     await page.goto(url, {
       waitUntil: "domcontentloaded",
     });
-    const results = await parser.parse();
-    //Just holds the text value that will be input to an assigment on submission.
-    let isPass = results.length == 0 ? "PASS" : "FAIL";
-
-    if (student.length != 0) {
-      //Find if assignment has been inserted once to students data
-      const updateStudent = await Student.findOne({
-        _id: student[0]._id,
-        results: {
-          $elemMatch: { id: assignment.id },
-        },
-      });
-      //If User has assignment done replace pass/fail value
-      if (updateStudent != null) {
-        await Student.updateOne(
-          { _id: student[0]._id, "results.id": assignment.id },
-          {
-            $set: { "results.$.result": isPass },
-            $inc: { "results.$.attempts": 1 },
-          }
-        );
-      } else {
-        //Create a new assignment.
-        await Student.updateOne(
-          { _id: student[0]._id },
-          {
-            $push: {
-              results: {
-                id: assignment.id,
-                name: name,
-                attempts: 1,
-                result: isPass,
-              },
-            },
-          }
-        );
-      }
-    } else {
-      const student = new Student({
-        name: username,
-        results: [
-          {
-            id: assignment.id,
-            name: name,
-            attempts: 1,
-            result: isPass,
-          },
-        ],
-      });
-      await student.save();
-    }
-    res.json(results);
+    results = await parser.parse();
   } catch (error) {
     console.error(error.message);
-    res.json([{ description: "Site did not work properly", result: "FAIL" }]);
+    results = [{ description: "Site did not work properly", result: "FAIL" }];
   } finally {
     if (config.DEBUG) await page.waitForTimeout(5000);
     await browser.close();
   }
+
+  console.log("results", results);
+
+  const student = await Student.findOne({ username });
+  const passed = results.length === 0;
+
+  if (student) {
+    const resultToUpdate = student.results.find((result) =>
+      result.assignment.equals(assignment._id)
+    );
+
+    if (!resultToUpdate) {
+      student.results.push({ assignment: assignment._id, attempts: 1, passed });
+    } else if (!resultToUpdate.passed) {
+      resultToUpdate.attempts += 1;
+      resultToUpdate.passwed = passed;
+    }
+
+    await student.save();
+  } else {
+    const student = new Student({
+      username,
+      results: [{ assignment: assignment._id, attempts: 1, passed }],
+    });
+
+    await student.save();
+  }
+
+  return res.json(results);
 });
 
 module.exports = router;

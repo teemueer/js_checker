@@ -1,6 +1,7 @@
 const database = require("./database/db");
 const app = require("./app");
 const supertest = require("supertest");
+const { beforeEach } = require("node:test");
 
 const api = supertest(app);
 
@@ -12,7 +13,9 @@ describe("Working solutions", () => {
     const data = {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m1-01",
     };
-    const res = await api.post("/api/assignments/m1-01").send(data);
+    const res = await api
+      .post("/api/assignments/644936de7a101f20186f0ec2")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -20,7 +23,9 @@ describe("Working solutions", () => {
     const data = {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m1-02",
     };
-    const res = await api.post("/api/assignments/m1-02").send(data);
+    const res = await api
+      .post("/api/assignments/644936de7a101f20186f0ec8")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -29,7 +34,9 @@ describe("Working solutions", () => {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m1-03",
     };
 
-    const res = await api.post("/api/assignments/m1-03").send(data);
+    const res = await api
+      .post("/api/assignments/644936de7a101f20186f0ece")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -37,7 +44,9 @@ describe("Working solutions", () => {
     const data = {
       url: "https://users.metropolia.fi/~juhojj/JS-HTML-CHECKER/Modules/Module%201/Assignment%204/assignment4.html",
     };
-    const res = await api.post("/api/assignments/m1-04").send(data);
+    const res = await api
+      .post("/api/assignments/644936de7a101f20186f0ed4")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -45,7 +54,9 @@ describe("Working solutions", () => {
     const data = {
       url: "https://users.metropolia.fi/~juhojj/JS-HTML-CHECKER/Modules/Module%201/Assignment%205/assignment5.html",
     };
-    const res = await api.post("/api/assignments/m1-05").send(data);
+    const res = await api
+      .post("/api/assignments/644936de7a101f20186f0eda")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -53,7 +64,9 @@ describe("Working solutions", () => {
     const data = {
       url: "https://users.metropolia.fi/~juhojj/JS-HTML-CHECKER/Modules/Module%201/Assignment%206/assignment6.html",
     };
-    const res = await api.post("/api/assignments/m1-06").send(data);
+    const res = await api
+      .post("/api/assignments/644936df7a101f20186f0ee0")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -61,7 +74,9 @@ describe("Working solutions", () => {
     const data = {
       url: "https://users.metropolia.fi/~juhojj/JS-HTML-CHECKER/Modules/Module%201/Assignment%207/assignment7.html",
     };
-    const res = await api.post("/api/assignments/m1-07").send(data);
+    const res = await api
+      .post("/api/assignments/644936df7a101f20186f0ee6")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -69,7 +84,9 @@ describe("Working solutions", () => {
     const data = {
       url: "https://users.metropolia.fi/~juhojj/JS-HTML-CHECKER/Modules/Module%201/Assignment%208/assignment8.html",
     };
-    const res = await api.post("/api/assignments/m1-08").send(data);
+    const res = await api
+      .post("/api/assignments/644936df7a101f20186f0eec")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -77,7 +94,9 @@ describe("Working solutions", () => {
     const data = {
       url: "https://users.metropolia.fi/~juhojj/JS-HTML-CHECKER/Modules/Module%201/Assignment%209/assignment9.html",
     };
-    const res = await api.post("/api/assignments/m1-09").send(data);
+    const res = await api
+      .post("/api/assignments/644936df7a101f20186f0ef2")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -85,7 +104,9 @@ describe("Working solutions", () => {
     const data = {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-01",
     };
-    const res = await api.post("/api/assignments/m2-01").send(data);
+    const res = await api
+      .post("/api/assignments/644936df7a101f20186f0ef8")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -93,7 +114,9 @@ describe("Working solutions", () => {
     const data = {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-02",
     };
-    const res = await api.post("/api/assignments/m2-02").send(data);
+    const res = await api
+      .post("/api/assignments/644936df7a101f20186f0efe")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -102,7 +125,9 @@ describe("Working solutions", () => {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-03",
     };
 
-    const res = await api.post("/api/assignments/m2-03").send(data);
+    const res = await api
+      .post("/api/assignments/644936df7a101f20186f0f04")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -111,7 +136,9 @@ describe("Working solutions", () => {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-04",
     };
 
-    const res = await api.post("/api/assignments/m2-04").send(data);
+    const res = await api
+      .post("/api/assignments/644936df7a101f20186f0f0a")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -120,7 +147,9 @@ describe("Working solutions", () => {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-05",
     };
 
-    const res = await api.post("/api/assignments/m2-05").send(data);
+    const res = await api
+      .post("/api/assignments/644936df7a101f20186f0f10")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -129,7 +158,9 @@ describe("Working solutions", () => {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-06",
     };
 
-    const res = await api.post("/api/assignments/m2-06").send(data);
+    const res = await api
+      .post("/api/assignments/644936e07a101f20186f0f16")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -138,7 +169,9 @@ describe("Working solutions", () => {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-07",
     };
 
-    const res = await api.post("/api/assignments/m2-07").send(data);
+    const res = await api
+      .post("/api/assignments/644936e07a101f20186f0f1c")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -169,7 +202,9 @@ describe("Working solutions", () => {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m2-10",
     };
 
-    const res = await api.post("/api/assignments/m2-10").send(data);
+    const res = await api
+      .post("/api/assignments/644936e07a101f20186f0f22")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -177,7 +212,9 @@ describe("Working solutions", () => {
     const data = {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-01",
     };
-    const res = await api.post("/api/assignments/m3-01").send(data);
+    const res = await api
+      .post("/api/assignments/644936e07a101f20186f0f28")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -185,7 +222,9 @@ describe("Working solutions", () => {
     const data = {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-02",
     };
-    const res = await api.post("/api/assignments/m3-02").send(data);
+    const res = await api
+      .post("/api/assignments/644936e07a101f20186f0f2e")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -194,7 +233,9 @@ describe("Working solutions", () => {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-03",
     };
 
-    const res = await api.post("/api/assignments/m3-03").send(data);
+    const res = await api
+      .post("/api/assignments/644936e07a101f20186f0f34")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -203,7 +244,9 @@ describe("Working solutions", () => {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-04",
     };
 
-    const res = await api.post("/api/assignments/m3-04").send(data);
+    const res = await api
+      .post("/api/assignments/644936e07a101f20186f0f3a")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -212,7 +255,9 @@ describe("Working solutions", () => {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-05",
     };
 
-    const res = await api.post("/api/assignments/m3-05").send(data);
+    const res = await api
+      .post("/api/assignments/644936e07a101f20186f0f40")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -232,7 +277,9 @@ describe("Working solutions", () => {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-07",
     };
 
-    const res = await api.post("/api/assignments/m3-07").send(data);
+    const res = await api
+      .post("/api/assignments/644936e17a101f20186f0f4c")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -241,7 +288,9 @@ describe("Working solutions", () => {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-08",
     };
 
-    const res = await api.post("/api/assignments/m3-08").send(data);
+    const res = await api
+      .post("/api/assignments/644936e17a101f20186f0f52")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -250,7 +299,9 @@ describe("Working solutions", () => {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-09",
     };
 
-    const res = await api.post("/api/assignments/m3-09").send(data);
+    const res = await api
+      .post("/api/assignments/644936e17a101f20186f0f58")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -259,7 +310,9 @@ describe("Working solutions", () => {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-10",
     };
 
-    const res = await api.post("/api/assignments/m3-10").send(data);
+    const res = await api
+      .post("/api/assignments/644936e17a101f20186f0f5e")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -268,7 +321,9 @@ describe("Working solutions", () => {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m3-11",
     };
 
-    const res = await api.post("/api/assignments/m3-11").send(data);
+    const res = await api
+      .post("/api/assignments/644936e17a101f20186f0f64")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
@@ -277,7 +332,9 @@ describe("Working solutions", () => {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/tvmaze",
     };
 
-    const res = await api.post("/api/assignments/tvmaze").send(data);
+    const res = await api
+      .post("/api/assignments/644936e17a101f20186f0f6a")
+      .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
 
