@@ -144,24 +144,39 @@ router.post("/:id", async (req, res) => {
 
   const student = await Student.findOne({ username });
   const passed = results.length === 0;
-
   if (student) {
     const resultToUpdate = student.results.find((result) =>
       result.assignment.equals(assignment._id)
     );
+    console.log("found student");
+    console.log(resultToUpdate);
 
     if (!resultToUpdate) {
-      student.results.push({ assignment: assignment._id, attempts: 1, passed });
-    } else if (!resultToUpdate.passed) {
+      console.log("New assignment");
+      student.results.push({
+        assignment: assignment._id,
+        name: assignment.name,
+        attempts: 1,
+        passed,
+      });
+    } else if (resultToUpdate) {
+      console.log("upating attempts");
       resultToUpdate.attempts += 1;
-      resultToUpdate.passwed = passed;
+      resultToUpdate.passed = passed;
     }
 
     await student.save();
   } else {
     const student = new Student({
       username,
-      results: [{ assignment: assignment._id, attempts: 1, passed }],
+      results: [
+        {
+          assignment: assignment._id,
+          name: assignment.name,
+          attempts: 1,
+          passed,
+        },
+      ],
     });
 
     await student.save();
