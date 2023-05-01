@@ -145,11 +145,16 @@ router.post("/:id", async (req, res) => {
   const student = await Student.findOne({ username });
   const passed = results.length === 0;
   if (student) {
+    if (!student.courses.includes(assignment.course)) {
+      console.log("Adding to course.");
+      student.courses.push(assignment.course);
+    }
+    {
+      console.log("Has enrolled to this course");
+    }
     const resultToUpdate = student.results.find((result) =>
       result.assignment.equals(assignment._id)
     );
-    console.log("found student");
-    console.log(resultToUpdate);
 
     if (!resultToUpdate) {
       console.log("New assignment");
@@ -169,6 +174,7 @@ router.post("/:id", async (req, res) => {
   } else {
     const student = new Student({
       username,
+      courses: [assignment.course],
       results: [
         {
           assignment: assignment._id,
