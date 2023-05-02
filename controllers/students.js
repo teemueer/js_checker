@@ -4,9 +4,17 @@ const Assignment = require("../models/assignment");
 const Course = require("../models/course");
 const router = express.Router();
 
+//Get all students
 router.get("/", async (req, res) => {
   const assignments = await Student.find().sort({ username: 1 });
   res.json(assignments);
+});
+
+//Get students that are enrolled to a certain course.
+router.post("/test", async (req, res) => {
+  const { id } = req.body;
+  const response = await Student.find({ courses: { _id: id } });
+  return res.json(response);
 });
 
 router.get("/assignment/:id", async (req, res) => {
