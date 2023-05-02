@@ -144,6 +144,9 @@ router.post("/:id", async (req, res) => {
 
   const student = await Student.findOne({ username });
   const passed = results.length === 0;
+  let points = 0;
+  if (passed) points = assignment.points;
+
   if (student) {
     if (!student.courses.includes(assignment.course)) {
       console.log("Adding to course.");
@@ -160,7 +163,7 @@ router.post("/:id", async (req, res) => {
       console.log("New assignment");
       student.results.push({
         assignment: assignment._id,
-        name: assignment.name,
+        points: points,
         attempts: 1,
         passed,
       });
@@ -168,6 +171,7 @@ router.post("/:id", async (req, res) => {
       console.log("upating attempts");
       resultToUpdate.attempts += 1;
       resultToUpdate.passed = passed;
+      resultToUpdate.points = points;
     }
 
     await student.save();
@@ -178,7 +182,7 @@ router.post("/:id", async (req, res) => {
       results: [
         {
           assignment: assignment._id,
-          name: assignment.name,
+          points: points,
           attempts: 1,
           passed,
         },

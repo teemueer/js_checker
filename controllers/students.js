@@ -13,9 +13,7 @@ router.get("/", async (req, res) => {
 //Get students that are enrolled in a certain course.
 router.post("/test", async (req, res) => {
   const { id } = req.body;
-  console.log(id);
   const response = await Student.find({ courses: { _id: id } });
-  console.log("enrolled pupils: " + response);
   return res.json(response);
 });
 

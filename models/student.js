@@ -15,6 +15,7 @@ const studentSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "Assignment",
         },
+        points: Number,
         attempts: Number,
         passed: Boolean,
       },
