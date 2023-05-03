@@ -107,7 +107,7 @@ router.post("/:id", async (req, res) => {
       .json({ message: "Testing allowed from users.metropolia only" });
   }
 
-  const assignment = await Assignment.findById(assignmentId);
+  const assignment = await Assignment.findById(assignmentId).populate("course");
   if (!assignment) {
     return res
       .status(404)
@@ -117,7 +117,7 @@ router.post("/:id", async (req, res) => {
   console.log(`Checking ${url} for assignment ${assignment.name}...`);
 
   const browser = await puppeteer.launch({
-    headless: config.DEBUG_MODE ? false : true,
+    headless: true,
     args: ["--no-sandbox"],
   });
 
@@ -126,73 +126,54 @@ router.post("/:id", async (req, res) => {
 
   const parser = new Parser(page, assignment);
 
-  let results;
+  let result;
   try {
     await page.goto(url, {
       waitUntil: "domcontentloaded",
     });
-    results = await parser.parse();
+    result = await parser.parse();
   } catch (error) {
     console.error(error.message);
-    results = [{ description: "Site did not work properly", result: "FAIL" }];
+    result = [{ description: "Site did not work properly", result: "FAIL" }];
   } finally {
     if (config.DEBUG) await page.waitForTimeout(5000);
     await browser.close();
   }
 
-  console.log("results", results);
-
-  const student = await Student.findOne({ username });
-  const passed = results.length === 0;
-  let points = 0;
-  if (passed) points = assignment.points;
-
-  if (student) {
-    if (!student.courses.includes(assignment.course)) {
-      console.log("Adding to course.");
-      student.courses.push(assignment.course);
-    }
-    {
-      console.log("Has enrolled to this course");
-    }
-    const resultToUpdate = student.results.find((result) =>
-      result.assignment.equals(assignment._id)
-    );
-
-    if (!resultToUpdate) {
-      console.log("New assignment");
-      student.results.push({
-        assignment: assignment._id,
-        points: points,
-        attempts: 1,
-        passed,
-      });
-    } else if (resultToUpdate) {
-      console.log("upating attempts");
-      resultToUpdate.attempts += 1;
-      resultToUpdate.passed = passed;
-      resultToUpdate.points = points;
-    }
-
-    await student.save();
-  } else {
-    const student = new Student({
-      username,
-      courses: [assignment.course],
-      results: [
-        {
-          assignment: assignment._id,
-          points: points,
-          attempts: 1,
-          passed,
-        },
-      ],
-    });
-
+  // student stuff
+  let student = await Student.findOne({ username });
+  if (!student) {
+    student = new Student({ username });
     await student.save();
   }
 
-  return res.json(results);
+  const course = assignment.course;
+
+  if (!course.students.includes(student._id)) {
+    course.students.push(student._id);
+  }
+  await course.save();
+
+  let prevResult = assignment.results.find((result) =>
+    student._id.equals(result.student)
+  );
+
+  const passed = result.length === 0;
+
+  if (!prevResult) {
+    assignment.results.push({
+      student: student._id,
+      attempts: 1,
+      passed,
+    });
+  } else if (!prevResult.passed) {
+    prevResult.attempts += 1;
+    prevResult.passed = passed;
+  }
+
+  await assignment.save();
+
+  return res.json(result);
 });
 
 module.exports = router;

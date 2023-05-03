@@ -24,7 +24,7 @@ app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/courses", coursesRouter);
 app.use("/api/assignments", assignmentsRouter);
-app.use("/api/student", studentsRouter);
+app.use("/api/students", studentsRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);

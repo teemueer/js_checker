@@ -90,7 +90,7 @@ class Parser {
     for (const obj of objects) {
       console.log(obj);
       // wait for a while for debugging
-      if (config.DEBUG_MODE) await this.page.waitForTimeout(500);
+      //if (config.DEBUG_MODE) await this.page.waitForTimeout(500);
 
       if (obj.type === "reload") {
         await this.page.reload();

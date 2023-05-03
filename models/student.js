@@ -8,18 +8,6 @@ const studentSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
-    results: [
-      {
-        assignment: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Assignment",
-        },
-        points: Number,
-        attempts: Number,
-        passed: Boolean,
-      },
-    ],
   },
   { versionKey: false }
 );

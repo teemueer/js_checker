@@ -14,7 +14,7 @@ describe("Working solutions", () => {
       url: "https://users.metropolia.fi/~teemueer/html_js_checker/m1-01",
     };
     const res = await api
-      .post("/api/assignments/644936de7a101f20186f0ec2")
+      .post("/api/assignments/6452369debdac7cf14a19c09")
       .send(data);
     expect(res.body.find((r) => r.result === "FAIL")).toBe(undefined);
   });
