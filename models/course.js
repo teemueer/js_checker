@@ -19,6 +19,12 @@ const courseSchema = mongoose.Schema(
         ref: "Assignment",
       },
     ],
+    students: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Student",
+      },
+    ],
   },
   { versionKey: false }
 );

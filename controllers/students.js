@@ -14,6 +14,7 @@ router.get("/", async (req, res) => {
 */
 
 //Get students that are enrolled to a certain course.
+/*
 router.get("/course/:id", userExtractor, async (req, res) => {
   const courseId = req.params.id;
 
@@ -26,15 +27,16 @@ router.get("/course/:id", userExtractor, async (req, res) => {
   const students = await Student.find({ courses: { _id: courseId } });
   return res.json(students);
 });
+*/
 
 router.get("/assignment/:id", async (req, res) => {
   const assignmentId = req.params.id;
-  console.log(assignmentId);
+
   const assignment = await Assignment.findById(assignmentId, {
     user: 0,
     items: 0,
   }).populate("course", { name: 1 });
-  console.log(assignment);
+
   res.json(assignment);
 });
 module.exports = router;

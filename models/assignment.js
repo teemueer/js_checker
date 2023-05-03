@@ -17,6 +17,16 @@ const assignmentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
     },
+    results: [
+      {
+        student: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Student",
+        },
+        attempts: { type: Number, default: 0 },
+        passed: { type: Boolean, default: false },
+      },
+    ],
     items: [],
   },
   { versionKey: false }

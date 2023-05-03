@@ -24,13 +24,21 @@ router.get("/:id", userExtractor, async (req, res) => {
   const courseId = req.params.id;
   const user = req.user;
 
-  const course = await Course.findOne({ _id: courseId, user }).populate(
-    "assignments",
-    {
-      items: 0,
-      course: 0,
-    }
-  );
+  const course = await Course.findOne({ _id: courseId, user }).populate({
+    path: "assignments",
+    select: {
+      name: 1,
+      points: 1,
+      description: 1,
+      results: 1,
+    },
+    populate: {
+      path: "results.student",
+      select: { username: 1 },
+    },
+  });
+
+  console.log(course);
 
   res.json(course);
 });
