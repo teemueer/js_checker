@@ -161,12 +161,14 @@ router.post("/:id", async (req, res) => {
   const passed = result.length === 0;
 
   if (!prevResult) {
+    console.log("Creating result");
     assignment.results.push({
       student: student._id,
       attempts: 1,
       passed,
     });
-  } else if (!prevResult.passed) {
+  } else if (prevResult) {
+    console.log("updating result");
     prevResult.attempts += 1;
     prevResult.passed = passed;
   }
